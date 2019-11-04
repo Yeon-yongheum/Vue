@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>todo</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    {{ todos }}
+    <!--
+      디렉티브
+      v-for : 반복문
+      v-if : 조건문
+      같이 작성을 하게 되면, 매 반복에 if를 체크
+    -->
+    <!-- <li v-for="todo in todos" v-if="!todo.commpleted" v-on:click="todo.commpleted=true"> -->
+      <hr>
+      <img v-bind:src="logo" alt="" width="200px">
+      <li v-for="todo in todos" v-if="!todo.commpleted" v-on:click="toggleComplated(todo)">
+      {{ todo.content }}
+    </li>
+    <li v-else v-on:click="toggleComplated(todo)">[완료!]</li>
+  </div>
+  <script>
+      const app = new Vue({
+        el: '#app', 
+        data: {
+          logo: 'https://repository-images.githubusercontent.com/105165445/b8efdd00-5d13-11e9-902e-3ce3c3d7e548',
+          todos: [
+            {
+              content: '수업 열심히 듣기',
+              commpleted: true
+            },
+            {
+              content: '밥먹기',
+              commpleted: false
+            },
+            {
+              content: '롤 하기',
+              commpleted: false
+            }
+          ]
+        },
+        methods: {
+          toggleComplated: function(todo){
+            todo.commpleted = !todo.commpleted
+          }
+        },
+      })
+    </script>
+</body>
+</html>
