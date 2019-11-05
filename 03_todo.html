@@ -6,6 +6,27 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>todo</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    body {
+      text-align: center;
+    }
+    #app {
+      margin-top: 20vh;
+    }
+    .completed {
+      color: gray;
+      text-decoration-line: line-through;
+    }
+    /* li{
+      cursor: ;
+    } */
+    .blue{
+      color: blue;
+    }
+    .pink{
+      color: pink;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -16,52 +37,102 @@
       v-if : 조건문
       같이 작성을 하게 되면, 매 반복에 if를 체크
     -->
-    <!-- <li v-for="todo in todos" v-if="!todo.commpleted" v-on:click="todo.commpleted=true"> -->
-      <hr>
-      <img v-bind:src="logo" alt="" width="200px"><br>
-      <input type="text" v-model="newTodo" v-on:keyup.enter='regTodo(newTodo)'><br>
-      <li v-for="todo in todos" v-if="!todo.commpleted" v-on:click="toggleComplated(todo)">
-      {{ todo.content }}
-    </li>
+    <!-- <li v-for="todo in todos" v-if="!todo.completed" v-on:click="todo.completed=true"> -->
+    <img v-bind:src="logo" alt="" width="200px"><br>
+    <h1 :style="{color: color, 'font-size': font}">케케케케ㅔ케</h1>
+    <button @click="allCompleted">Complete</button>
+    <button @click="clearCompleted">Clear</button>
+    <br>
+    <input type="text" v-model="newTodo" v-on:keyup.enter='regTodo(newTodo)'><br>
+    <!-- status 상태를 부여 -->
+    <select v-model="status">
+      <option value="all">모두보기</option>
+      <option value="active">할 일</option>
+      <option value="complete">완료</option>
+    </select>
+    <!-- <li v-for="todo in todos" v-if="!todo.completed" v-on:click="toggleComplated(todo)"> -->
+    <!-- <li v-for="todo in todos" :class="{completed: todo.completed}"> todo.completed가 true 이면 complated class가 적용이 된다.-->
+    <li v-for="todo in todosByStatus" :class="{completed: todo.completed}" :key="todo.id">
+    <input type="checkbox" v-model="todo.completed">
+    {{ todo.content }}
+    <!-- :class="{completed: todo.completed}" 추가 함으로써 v-else를 없앨수 있다. -->
+    <!-- </li>
     <li v-else v-on:click="toggleComplated(todo)">
       <del>
         {{ todo.content }}
       </del>
-    </li>
+    </li> -->
   </div>
   <script>
+    const todoStorage = {
+      fetch() { // 가져오는 작업 (JSON -> object 리턴))
+        return JSON.parse(localStorage.getItem('vue-todo') || "[]")
+      },
+      set(todos) { // 로컬스트리지에 저장하는 작업 (object -> JSON)
+        localStorage.setItem('vue-todo', JSON.stringify(todos))
+      }
+    }
     const app = new Vue({
       el: '#app', 
       data: {
-        newTodo:'',
+        time: '',
+        color: 'blue',
+        font: '30px',
+        status: 'all', // active(false), completed(true), all()
+        newTodo: '',
         logo: 'https://repository-images.githubusercontent.com/105165445/b8efdd00-5d13-11e9-902e-3ce3c3d7e548',
         todos: [
-          {
-            content: '수업 열심히 듣기',
-            commpleted: true
-          },
-          {
-            content: '밥먹기',
-            commpleted: false
-          },
-          {
-            content: '롤 하기',
-            commpleted: false
-          }
         ]
       },
       methods: {
         toggleComplated: function(todo){
-          todo.commpleted = !todo.commpleted
+          todo.completed = !todo.completed
         },
         regTodo: function(newTodo){
           this.todos.push({
-            content:newTodo,
-            commpleted:false
+            id: Date.now(),
+            content: newTodo,
+            completed: false,
           })
           newTodo = ''
+        },
+        allCompleted: function(){
+          this.todos.forEach(todo => {
+            todo.completed = true
+          })
+        },
+        clearCompleted(){
+          this.todos = this.todos.filter(todo => {
+            return !todo.completed
+          })
+        },
+      },
+      computed: {
+        todosByStatus(){
+          console.log('!!!!!!')
+          // this.status 1) 'active' 2) 'complete' else all
+          if (this.status === 'active'){
+            return this.todos.filter(todo=> !todo.completed)
+          } else if (this.status === 'complete'){
+            return this.todos.filter(todo=> todo.completed)
+          } else {
+            return this.todos
+          }
+        }   
+      },
+      watch: {// 특정 data의 변경을 추적, 반응 
+        todos: { // todos를 바라봐
+          handler: function() {
+            todoStorage.set(this.todos)
+          },
+          deep: true // 원소들의 변경, 그 원소의 변경
         }
-      }
+      },
+      mounted: function() { // vue 시작되는 시점
+        console.log('아침이 되었습니다.')
+        // 현재 시간
+        this.todos = todoStorage.fetch()
+      },
     })
   </script>
 </body>

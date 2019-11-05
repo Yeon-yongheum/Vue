@@ -20,6 +20,7 @@
 </head>
 <body>
   <div id="app">
+
     <h1>{{ message }}</h1>
     <!-- 반복문 돌려서 li 태그로 이름 출력
         for 
@@ -40,13 +41,29 @@
     <button v-on:click="countUp">++++++</button>
     <p>{{ counter }}</p>
     <button @click="countDown">------</button>
+
+    <!-- computed vs methods -->
+    <h2>method : {{ dateMethod() }}</h2> <!-- 함수를 실행, 모든 data 변경시마다 계속 호출-->
+    <h2>computed: {{ dateComputed }}</h2> <!-- 함수의 실행 결과를 계산된(computed)변수의 값으로 저장 -->
+
+    <!-- v-text -->
+    <h3 v-text="message"></h3>
+    <h3>{{message}}</h3>
+    <!-- html -->
+    {{ myTag }}
+    <span v-html="myTag"></span>
+    <!-- v-show -->
+    <p v-show="false"> 브이쇼 </p> <!-- 렌더링은 하는데, css로 보이지 않게함 (개발자도구화면) -->
+    <p v-if="false"> 브이이프 </p> <!-- 렌더링 자체를 하지 앖음. -->
+    
   </div>
   <script>
     const app = new Vue({
       el: '#app',
-      data: { // app.$data
+      data: {  // app.$data
         url: 'http://www.chem-product.com/images/pic/2-5.jpg',
         message: 'Hello', // app.message
+        myTag: '<h2>우왕</h2>',
         members: [
           {name: '경호', gender: 'M'},
           {name: '은비', gender: 'F'},
@@ -63,6 +80,14 @@
         countDown: function(){
           this.counter--
           console.log(this.counter)
+        },
+        dateMethod() {
+          return new Date()
+        }
+      },
+      computed: {
+        dateComputed() {
+          return new Date()
         }
       }
     })
