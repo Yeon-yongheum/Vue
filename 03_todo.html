@@ -30,39 +30,39 @@
     </li>
   </div>
   <script>
-      const app = new Vue({
-        el: '#app', 
-        data: {
-          newTodo:'',
-          logo: 'https://repository-images.githubusercontent.com/105165445/b8efdd00-5d13-11e9-902e-3ce3c3d7e548',
-          todos: [
-            {
-              content: '수업 열심히 듣기',
-              commpleted: true
-            },
-            {
-              content: '밥먹기',
-              commpleted: false
-            },
-            {
-              content: '롤 하기',
-              commpleted: false
-            }
-          ]
-        },
-        methods: {
-          toggleComplated: function(todo){
-            todo.commpleted = !todo.commpleted
+    const app = new Vue({
+      el: '#app', 
+      data: {
+        newTodo:'',
+        logo: 'https://repository-images.githubusercontent.com/105165445/b8efdd00-5d13-11e9-902e-3ce3c3d7e548',
+        todos: [
+          {
+            content: '수업 열심히 듣기',
+            commpleted: true
           },
-          regTodo: function(newTodo){
-            this.todos.push({
-              content:newTodo,
-              commpleted:false
-            })
-            newTodo = ''
+          {
+            content: '밥먹기',
+            commpleted: false
+          },
+          {
+            content: '롤 하기',
+            commpleted: false
           }
+        ]
+      },
+      methods: {
+        toggleComplated: function(todo){
+          todo.commpleted = !todo.commpleted
+        },
+        regTodo: function(newTodo){
+          this.todos.push({
+            content:newTodo,
+            commpleted:false
+          })
+          newTodo = ''
         }
-      })
-    </script>
+      }
+    })
+  </script>
 </body>
 </html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+  body {
+    text-align: center;
+  }
+  #app {
+    margin-top: 20vh;
+  }
+  .completed {
+    color: gray;
+  }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>{{ message }}</h1>
+    <!-- 반복문 돌려서 li 태그로 이름 출력
+        for 
+          if (같은 라인, 우선수위가 for 가 높음)
+    -->
+    <li v-for="member in members" v-if="member.gender === 'M'">{{ member.name }}?</li>
+    <li v-else>{{ member.name }}</li>
+    <!-- v-model 
+        data내에 초기화하는 작업이 필요하다.
+    -->
+    <input type="text" v-model="userText">
+    <p>사용자가 입력 중...{{ userText }}</p>
+    <!-- 속성값 : v-bind -->
+    <img v-bind:src="url">
+    <img :src="url"> <!-- v-bind 쓰지 않아도 된다.-->
+    <br>
+    <!-- method -->
+    <button v-on:click="countUp">++++++</button>
+    <p>{{ counter }}</p>
+    <button @click="countDown">------</button>
+  </div>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: { // app.$data
+        url: 'http://www.chem-product.com/images/pic/2-5.jpg',
+        message: 'Hello', // app.message
+        members: [
+          {name: '경호', gender: 'M'},
+          {name: '은비', gender: 'F'},
+          {name: '태우', gender: 'M'},
+        ],
+        userText: '',
+        counter: 0
+      },
+      methods: {
+        countUp: function(){
+          this.counter++
+          console.log(this.counter)
+        },
+        countDown: function(){
+          this.counter--
+          console.log(this.counter)
+        }
+      }
+    })
+  </script>
+</body>
+</html>
