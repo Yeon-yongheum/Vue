@@ -25,8 +25,9 @@
     <!-- 반복문 돌려서 li 태그로 이름 출력
         for 
           if (같은 라인, 우선수위가 for 가 높음)
+          * 반복문 시행시 항상 key를 유니크하게 설정할 것
     -->
-    <li v-for="member in members" v-if="member.gender === 'M'">{{ member.name }}?</li>
+    <li v-for="member in members" v-if="member.gender === 'M'" :key="member.id">{{ member.name }}?</li>
     <li v-else>{{ member.name }}</li>
     <!-- v-model 
         data내에 초기화하는 작업이 필요하다.
@@ -55,7 +56,7 @@
     <!-- v-show -->
     <p v-show="false"> 브이쇼 </p> <!-- 렌더링은 하는데, css로 보이지 않게함 (개발자도구화면) -->
     <p v-if="false"> 브이이프 </p> <!-- 렌더링 자체를 하지 앖음. -->
-    
+
   </div>
   <script>
     const app = new Vue({
@@ -65,9 +66,9 @@
         message: 'Hello', // app.message
         myTag: '<h2>우왕</h2>',
         members: [
-          {name: '경호', gender: 'M'},
-          {name: '은비', gender: 'F'},
-          {name: '태우', gender: 'M'},
+          {id: 1, name: '경호', gender: 'M'},
+          {id: 2, name: '은비', gender: 'F'},
+          {id: 3, name: '태우', gender: 'M'},
         ],
         userText: '',
         counter: 0
@@ -88,6 +89,17 @@
       computed: {
         dateComputed() {
           return new Date()
+        }
+      },
+      mounted: function() {
+        console.log('처음 시행시 함수를 실행합니다.')
+      },
+      watch: {
+        message: {
+          handler: function() {
+            console.log('메세지 값이 변경되면 함수를 실행합니다.')
+          },
+          // deep: true // nested object(중첩된 오브젝트의 변경사항까지도 추적)
         }
       }
     })

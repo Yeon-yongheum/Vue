@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>v-model</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .red{
+      color: red;
+    }
+    .blue{
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <input v-model.trim="message" type="text" > <br>
+    <input v-model.number="number" type="number"> <br>
+    <select v-model="jiwoo.poketmon">
+      <option value="꼬부기">꼬부기</option>
+      <option value="이상해씨">이상해씨</option>
+      <option value="파이리">파이리</option>
+    </select>
+    <input type="checkbox" v-model="checked">
+    <form action="">
+      <label for="water">물</label>
+      <input v-model="type" value="water" type="radio" id="water">
+      <label for="fire">불</label>
+      <input v-model="type" value="fire" type="radio" id="fire">
+      <label for="green">풀</label>
+      <input v-model="type" value="green" type="radio" id="green">
+    </form>
+    <p :class="{red: !isBlue, blue: isBlue}">빨파</p>
+    <button @click="changeColor">Toggle</button>
+    <p :style="{color: colorName}">빨파</p>
+    
+    
+  </div>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        isBlue: true,
+        jiwoo: {
+          poketmon: ''
+        },
+        message: '',
+        number: 0,
+        select: '',
+        checked: true,
+        type: '',
+        numbers: [0,1,2,3,4],
+        colorName: 'blue'
+      },
+      methods: {
+        changeColor(){
+          this.isBlue =! this.isBlue
+          if (this.colorName === 'red'){
+            this.colorName = 'blue'
+          }
+          else{
+            this.colorName = 'red'
+          }
+        }
+      },
+    })
+  </script>
+</body>
+</html>

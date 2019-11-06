@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>new_todo</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+   .completed {
+      color: gray;
+      text-decoration-line: line-through;
+    }
+  </style>
+</head>
+<body>
+    <div id="app">
+      <h1>Hm's Todo</h1>
+      <todo-list category="취업준비" ></todo-list>
+      <todo-list category="싸피" ></todo-list>
+      <todo-list category="개인"></todo-list>
+    </div>
+    <script>
+      // 전역 컴포넌트 선언부
+      Vue.component('todo-list', {
+        template:       
+        `<div class="todo-list">
+          <h2>{{ category }}</h2>
+          <input type="text" v-model="newTodo" v-on:keyup.enter="addTodo(newTodo)">
+          <button @click="addTodo(newTodo)">추가하기</button><br>
+          <li v-for="todo in todos" :class="{completed: todo.completed}" :key="todo.id">
+            <input type="checkbox" v-model="todo.completed">
+              {{ todo.content }}
+            <button @click="removeTodo(todo)">삭제하기</button>
+          </li>
+        </div>`
+        ,
+        props: {
+          category: {
+            type: String,
+            required: true
+          }
+        }, // 하위 컴포넌트로 데이터 전송 +검증
+        // data를 펑션으로 만들고 object를 인자로 넘긴다.
+        data() {
+          return {
+            todos: [],
+            newtodo: ''
+          }
+        },
+        methods: {
+          addTodo(newTodo){
+            this.todos.push({
+              id: Date.now(),
+              content: newTodo,
+              completed: false,
+            })
+            this.newTodo = ''
+          },
+          removeTodo(removeTodo){
+            this.todos = this.todos.filter(todo => {
+              return todo.id !== removeTodo.id
+            })
+          }
+        }
+      })
+      
+    </script>
+    <script>
+      // 루트 오브젝트
+      const app = new Vue({
+        el: '#app', 
+        // data: {  
+        //   newTodo: '',
+        //   todos: [
+
+        //   ]
+        // },
+        // methods: {
+        //   addTodo(newTodo){
+        //     this.todos.push({
+        //       id: Date.now(),
+        //       content: newTodo,
+        //       completed: false,
+        //     })
+        //     this.newTodo = ''
+        //   },
+        //   removeTodo(removeTodo){
+        //     this.todos = this.todos.filter(todo => {
+        //       return todo.id !== removeTodo.id
+        //     })
+        //   }
+        // }
+      })
+    </script>
+</body>
+</html>
